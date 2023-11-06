@@ -1,0 +1,62 @@
+<!-- templates/create_account.html -->
+{% extends 'base.html' %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block body %}
+<style>
+    .form-group input {
+        width: calc(100% - 22px); /* Adjust width, subtracting padding and border */
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-group input[type="submit"] {
+        background-color: #007bff; /* Make the button blue */
+        color: white;
+        border: none; /* Remove default border */
+        padding: 10px;
+        cursor: pointer;
+        width: 100%; /* Match the width of the text inputs */
+        border-radius: 4px; /* Match the border radius of the text inputs */
+    }
+
+    /* Add a hover effect for the button */
+    .form-group input[type="submit"]:hover {
+        background-color: #0056b3; /* A slightly darker blue on hover */
+    }
+</style>
+
+<h2>Create Account</h2>
+<form action="{{ url_for('create_account') }}" method="post">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div class="form-group">
+        <label for="verify_password">Verify Password:</label>
+        <input type="password" id="verify_password" name="verify_password" required>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create Account">
+    </div>
+</form>
+<div class="form-group">
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</div>
+{% endblock %}

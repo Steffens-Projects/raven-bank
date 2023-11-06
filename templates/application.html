@@ -1,0 +1,46 @@
+<!-- application.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Use the full height of the viewport */
+        }
+        img {
+            max-width: 90%; /* Adjust the width of the image as needed */
+            height: auto;
+            margin-bottom: 20px; /* Space between the image and the button */
+        }
+        .logout-link {
+            padding: 20px 40px; /* Increased padding to make the button larger */
+            background-color: #dc3545; /* Logout button color */
+            color: white;
+            text-decoration: none;
+            border-radius: 8px; /* Slightly larger border radius for aesthetic */
+            font-size: 1.5em; /* Larger font size for the button text */
+            font-weight: bold; /* Optional: Makes the text bold */
+            display: inline-block; /* Ensures that padding and text size are respected */
+            margin-top: 20px; /* Space above the logout button */
+            cursor: pointer; /* Changes the cursor to indicate a clickable item */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+        .logout-link:hover {
+            background-color: #bd2130; /* Darker shade when hovered */
+        }
+    </style>
+</head>
+<body>
+    <img src="{{ url_for('static', filename='raven.jpg') }}" alt="Raven Image" class="raven-image">
+    <a href="/logout" class="logout-link">Logout</a>
+</body>
+</html>
+
