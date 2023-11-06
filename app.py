@@ -23,7 +23,7 @@ serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 
 # UTILITY FUNCTIONS
-# ==========================================
+# =========================================
 
 def database_connection():
     connection = None
