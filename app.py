@@ -29,7 +29,7 @@ def database_connection():
     connection = None
     try:
         connection = mysql.connector.connect(
-            host="localhost",
+            host="host.docker.internal",
             user="root",
             passwd=os.getenv("MYSQL_ROOT_PASSWORD"),
             database=os.getenv("MYSQL_DATABASE")
