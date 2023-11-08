@@ -218,4 +218,4 @@ def reset_with_token(token):
     return render_template('reset_with_token.html', token=token)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80)
