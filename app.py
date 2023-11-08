@@ -208,6 +208,7 @@ def reset_with_token(token):
             conn = database_connection()
             cursor = conn.cursor()
             cursor.execute('UPDATE users SET password = %s WHERE email = %s', (hashed_password, email))
+            conn.commit()
         except Exception as e:
            flash('An error occurred while updating your password.', 'danger') 
         finally:
