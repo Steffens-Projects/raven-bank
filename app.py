@@ -7,10 +7,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import boto3
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
-
 # GENERAL SETUP TASKS
 # ==========================================
-load_dotenv('variables.env')
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 app.config['AWS_ACCESS_KEY_ID'] = os.getenv('AWS_ACCESS_KEY_ID')
@@ -20,18 +18,18 @@ serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 
 
-
-
 # UTILITY FUNCTIONS
 # =========================================
 
+# Function to establish database connection to a MySQL Database
+# Requires access to enviornment variables
 def database_connection():
     connection = None
     try:
         connection = mysql.connector.connect(
-            host="host.docker.internal",
-            user="root",
-            passwd=os.getenv("MYSQL_ROOT_PASSWORD"),
+            host=os.getenv("MYSQL_HOSTNAME"),
+            user=os.getenv("MYSQL_MASTER_USER"),
+            passwd=os.getenv("MYSQL_MASTER_PASSWORD"),
             database=os.getenv("MYSQL_DATABASE")
         )
         print("Database connection: SUCCESS!")
@@ -39,23 +37,27 @@ def database_connection():
         print(f"Error: {err}")
     return connection
 
-
+# 
 @app.after_request
 def add_header(response):
     # Disable caching for all responses
     response.headers['Cache-Control'] = 'no-store'
     return response
 
-
+# Function to generate token used for resetting account password
 def generate_password_reset_token(email):
     return serializer.dumps(email, salt='email-reset')
 
+
 # ROUTE FUNCTIONS
 # ==========================================
+
+# Root page
 @app.route('/')
 def index():
     return render_template("index.html")
 
+# Main app page after you log in
 @app.route('/application', methods=['GET', 'POST'])
 def application():
     if 'username' not in session:
@@ -73,6 +75,7 @@ def application():
             pass
     return render_template('application.html')
 
+# Logout page
 @app.route('/logout')
 def logout():
     session.pop('username', None)
@@ -80,6 +83,7 @@ def logout():
     flash('You have been logged out.', 'success')
     return redirect(url_for('index'))
 
+# Login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -107,6 +111,7 @@ def login():
 
     return render_template('login.html')
 
+# Create account page
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account():
     if request.method =='POST':
@@ -155,6 +160,7 @@ def create_account():
 
     return render_template('create_account.html')
 
+# Reset password main page
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
     if request.method=='POST':
@@ -183,6 +189,7 @@ def reset_password():
         return redirect(url_for('login'))
     return render_template('reset_password.html')
 
+# Function to reset account password
 @app.route('/reset/<token>', methods=['GET', 'POST'])
 def reset_with_token(token):
     try:
